@@ -1,7 +1,4 @@
-Here is a **clean, formatted README** based on your uploaded PDF.
-If you want, I can also convert this into **Markdown**, **PDF**, **DOCX**, **GitHub-style README**, or **add diagrams**.
 
----
 
 # 📦 Inventory Management API – README
 
@@ -187,11 +184,3 @@ It serves as a strong foundation for real-world API testing and CI/CD automation
 
 ---
 
-If you want, I can generate:
-
-✅ **A perfect GitHub README.md file**
-✅ **A DOCX or PDF version**
-✅ **Add diagrams (API flow, architecture, sequence)**
-✅ **Create Postman test scripts for each request**
-
-Just tell me what you need!
