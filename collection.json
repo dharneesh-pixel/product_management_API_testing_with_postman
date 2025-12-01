@@ -1,0 +1,400 @@
+{
+	"info": {
+		"_postman_id": "93d6fcd4-5442-41b8-a73c-95e7b1fd6747",
+		"name": "toys",
+		"description": "Overview  \nThe Toys API collection provides CRUD operations for toy resources. Use this collection with the \"toys\" environment to set baseurl, endpoint, and authentication variables. All requests use the same base URL: {{baseurl}} and target the {{endpoint}} path segment. Authentication, if required by your backend, should be supplied via headers (e.g., Authorization: Bearer {{token}}) at the request or collection level.\n\nQuick start\n\n1) Select the \"toys\" environment.  \n2) Set variables: baseurl (e.g., [https://api.example.com](https://api.example.com)), endpoint (e.g., toys), prid (when needed), and token if auth is required.  \n3) Send requests in this order for a typical flow: new data (POST), fetch (GET list), fetch by id (GET), update (PUT), stock status (PATCH), delete (DELETE).\n\nAuth\n\n- Scheme: Typically Bearer token in Authorization header. Store token in the environment as token and add header Authorization: Bearer {{token}} if applicable.\n    \n\nConventions\n\n- Path variables: {{prid}} represents a toy identifier.\n    \n- Common headers: Content-Type: application/json for write operations.\n    \n- Error handling: 4xx for client errors (validation, not found), 5xx for server errors.\n    \n\nVariables\n\n- {{baseurl}}: API base URL\n    \n- {{endpoint}}: Resource path segment (e.g., toys)\n    \n- {{prid}}: Resource ID for individual operations\n    \n- {{token}}: Optional auth token",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50236671",
+		"_collection_link": "https://dharneeshss006-7107951.postman.co/workspace/Dharneesh-ss's-Workspace~f0c35700-0c69-4956-829d-a7e090a46c7a/collection/50236671-93d6fcd4-5442-41b8-a73c-95e7b1fd6747?action=share&source=collection_link&creator=50236671"
+	},
+	"item": [
+		{
+			"name": "fetch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"successful response\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test(\"not found\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"response ok\", function () {\r",
+							"    pm.response.to.have.status('OK');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/{{endpoint}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"{{endpoint}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"prid\", pm.response.json().prid);\r",
+							"\r",
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"console.log(pm.response.code)\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n    {\r\n        \"toyname\": \"{{toyname}}\",\r\n        \"price\": \"{{$randomPrice}}\",\r\n        \"stock\": false\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/{{endpoint}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"{{endpoint}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetch by id",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"successful response\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test(\"not found\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"response ok\", function () {\r",
+							"    pm.response.to.have.status('OK');\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"erroe on client side\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.above([399]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"error on client or server\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.below([500]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/{{endpoint}}/{{prid}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"{{endpoint}}",
+						"{{prid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"pm.test(\"CORS check\",()=>{\r",
+							"    let expectedCORS=['Access-Control-Allow-Headers','Access-Control-Allow-Methods','Access-Control-Allow-Origin']\r",
+							"     expectedCORS.forEach(h => {\r",
+							"        pm.response.to.have.header(h)\r",
+							"     })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Content-Type is application/json\", ()=> {\r",
+							"    pm.response.to.have.header(\"Content-Type\",\"application/json\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"erroe on client side\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.above([399]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"error on client or server\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.below([500]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"toyname\": \"{{toyname}}\", // \r\n    \"price\": \"{{$randomPrice}}\",\r\n    \"stock\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/{{endpoint}}/{{prid}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"{{endpoint}}",
+						"{{prid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "stock status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"pm.test(\"server is exist\",() =>{\r",
+							"    pm.expect(pm.response.headers.get(\"Server\")).to.be.exist\r",
+							"})\r",
+							"pm.test(\"successful response\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test(\"not found\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"response ok\", function () {\r",
+							"    pm.response.to.have.status('OK');\r",
+							"});\r",
+							"pm.test(\"erroe on client side\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.above([399]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"error on client or server\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.below([500]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"stock\": {{status}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/{{endpoint}}/{{prid}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"{{endpoint}}",
+						"{{prid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"successful response\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test(\"not found\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"erroe on client side\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.above([399]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"error on client or server\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.below([500]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseurl}}/{{endpoint}}/{{prid}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"{{endpoint}}",
+						"{{prid}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"console.log(\"pre-request\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseurl",
+			"value": "https://6925967582b59600d72443bb.mockapi.io/toysdata"
+		},
+		{
+			"key": "endpoint",
+			"value": "toy"
+		}
+	]
+}
